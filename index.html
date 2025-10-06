@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jonafin — Submit offers, skip the premium brokerage fees</title>
+  <meta name="description" content="Jonafin helps prospective homeowners submit offers without paying premium brokerage fees. Also a flexible side-gig for brokers." />
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Nunito', sans-serif; }
+    .hero-bg { background: linear-gradient(180deg,#0f172a 0%, #0b1220 60%);} 
+    .glass { background: rgba(255,255,255,0.06); backdrop-filter: blur(6px); }
+  </style>
+</head>
+<body class="antialiased text-slate-100 bg-slate-900">
+  <!-- NAV -->
+  <header class="max-w-7xl mx-auto p-6 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-3 group">
+      <!-- Clean modern house logo -->
+      <div class="relative flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-emerald-400 to-sky-500 rounded-2xl shadow-lg transition-transform duration-300 group-hover:scale-110">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-9 h-9 text-slate-900">
+          <path d="M3 10l9-7 9 7v9a2 2 0 0 1-2 2h-4v-6H9v6H5a2 2 0 0 1-2-2v-9z" />
+          <path d="M9 22h6" stroke-linecap="round" />
+        </svg>
+      </div>
+      <div class="flex flex-col leading-tight">
+        <span class="font-black text-3xl tracking-tight bg-gradient-to-r from-emerald-400 via-sky-400 to-blue-500 text-transparent bg-clip-text drop-shadow-md">Jonafin</span>
+        <span class="text-sm text-slate-400 font-semibold">Your home. Your offer. Your Savings.</span>
+      </div>
+    </a>
+    <nav class="hidden md:flex items-center gap-6 text-sm text-slate-300 font-medium">
+      <a href="#how" class="hover:text-emerald-400 transition">How it works</a>
+      <a href="#brokers" class="hover:text-emerald-400 transition">For Brokers</a>
+      <a href="#faq" class="hover:text-emerald-400 transition">FAQ</a>
+      <a href="#contact" class="px-6 py-3 text-lg rounded-md bg-emerald-500 text-slate-900 font-semibold hover:bg-emerald-400 transition">Get started</a>
+    </nav>
+    <button class="md:hidden p-2 rounded-md glass" aria-label="menu">☰</button>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero-bg py-16">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight">Buy homes smarter. Pay less. Make offers through <span class="text-emerald-400">Jonafin</span>.</h1>
+      <p class="mt-4 text-slate-300 text-lg">Jonafin lets prospective homeowners submit competitive offers without paying a premium on brokerage fees — and gives brokers a flexible side gig to earn extra income.</p>
+
+      <div class="mt-8 flex items-center justify-center gap-4">
+        <button id="openOfferBtn" class="inline-block rounded-md bg-emerald-500 px-6 py-4 text-lg font-semibold text-slate-900 hover:bg-emerald-400 transition">Submit an offer</button>
+        <a href="#brokers" class="inline-block rounded-md border border-slate-700 px-6 py-4 text-lg text-slate-200 hover:border-emerald-400 transition">I'm a broker</a>
+      </div>
+
+      <ul class="mt-8 inline-grid grid-cols-2 gap-3 text-sm text-slate-300">
+        <li>✅ Lower buyer costs</li>
+        <li>✅ Offer likelihood intelligence</li>
+        <li>✅ Fast offer submissions</li>
+        <li>✅ Flexible broker opportunities</li>
+        
+      </ul>
+
+      <p class="mt-6 text-xs text-slate-400">Available in select markets. Always comply with local real-estate regulations.</p>
+    </div>
+
+    <!-- Offer modal (hidden by default) -->
+    <div id="offerModal" class="fixed inset-0 z-50 hidden items-center justify-center p-6">
+      <div class="absolute inset-0 bg-black/60" id="modalBackdrop"></div>
+      <div class="relative z-10 w-full max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden">
+        <div class="p-6">
+          <div class="flex items-start justify-between">
+            <h3 class="text-xl font-semibold text-slate-900">Submit an offer</h3>
+            <button id="closeModal" class="text-slate-600">✕</button>
+          </div>
+
+          <form id="offerForm" class="mt-4 space-y-3 text-slate-900">
+            <div>
+              <label class="text-xs">Property address</label>
+              <input required name="address" class="w-full mt-1 p-3 rounded-md" placeholder="123 Main St, City, ST" />
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs">Offer amount (USD)</label>
+                <input required type="number" min="0" name="amount" class="w-full mt-1 p-3 rounded-md" placeholder="e.g. 450000" />
+              </div>
+              <div>
+                <label class="text-xs">Closing timeline</label>
+                <select name="timeline" class="w-full mt-1 p-3 rounded-md">
+                  <option>30 days</option>
+                  <option>45 days</option>
+                  <option>60 days</option>
+                  <option>Custom...</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="text-xs">Your name</label>
+              <input required name="name" class="w-full mt-1 p-3 rounded-md" placeholder="Full name" />
+            </div>
+            <div>
+              <label class="text-xs">Phone or email</label>
+              <input required name="contact" class="w-full mt-1 p-3 rounded-md" placeholder="you@domain.com or (555) 555-5555" />
+            </div>
+            <div class="flex items-center gap-3">
+              <button type="submit" class="py-4 px-6 rounded-md bg-emerald-500 text-lg font-semibold">Send offer</button>
+              <button type="button" class="py-4 px-6 rounded-md border" onclick="quickDemo()">Demo</button>
+            </div>
+            <p class="text-xs text-slate-700">By sending an offer you agree Jonafin will share your offer with the listing side and any broker you designate. Jonafin is a platform — check local rules and consult a licensed broker where required.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="max-w-6xl mx-auto px-6 py-16">
+    <h2 class="text-2xl font-bold mb-6">How Jonafin works</h2>
+    <div class="grid md:grid-cols-3 gap-6 text-slate-300">
+      <div class="p-6 bg-slate-800 rounded-lg">
+        <h4 class="font-semibold mb-2">1. Submit offer</h4>
+        <p class="text-sm">Buyers fill a guided form with offer terms and contact details. We validate and package the offer professionally.</p>
+      </div>
+      <div class="p-6 bg-slate-800 rounded-lg">
+        <h4 class="font-semibold mb-2">2. Transparent fees</h4>
+        <p class="text-sm">Jonafin displays clear fee splits so buyers don't pay inflated brokerage premiums — sellers and brokers agree on splits up front.</p>
+      </div>
+      <div class="p-6 bg-slate-800 rounded-lg">
+        <h4 class="font-semibold mb-2">3. Connect & close</h4>
+        <p class="text-sm">Offers are delivered to listing agents and participating brokers. From there the standard negotiation and closing process continues.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BROKERS (centered single block) -->
+  <section id="brokers" class="py-12 bg-slate-850">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="bg-slate-800 rounded-lg p-10 text-center">
+        <div class="flex items-center justify-center mb-6">
+          <!-- larger briefcase icon -->
+          <svg class="w-14 h-14 text-sky-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="3" y="7" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <h3 class="text-3xl font-bold">For real estate brokers</h3>
+        <p class="mt-4 text-slate-300 max-w-2xl mx-auto">Use Jonafin as a flexible side-gig: accept offers from motivated buyers, close deals on your schedule, and earn competitive referral or service fees — with full transparency.</p>
+
+        <ul class="mt-6 flex flex-wrap justify-center gap-6 text-sm text-slate-300">
+          <li>Control your availability and rates</li>
+          <li>Clear terms — no surprise premiums</li>
+          <li>Built-in client leads and offer flow</li>
+        </ul>
+
+        <div class="mt-8">
+          <button id="openBrokerBtn" class="inline-block rounded-md bg-sky-500 px-8 py-5 text-xl font-semibold text-slate-900">Sign up as a broker</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Broker modal (hidden by default) -->
+    <div id="brokerModal" class="fixed inset-0 z-50 hidden items-center justify-center p-6">
+      <div class="absolute inset-0 bg-black/60" id="brokerBackdrop"></div>
+      <div class="relative z-10 w-full max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden">
+        <div class="p-6">
+          <div class="flex items-start justify-between">
+            <h3 class="text-xl font-semibold text-slate-900">Broker sign up</h3>
+            <button id="closeBroker" class="text-slate-600">✕</button>
+          </div>
+
+          <form id="brokerForm" class="mt-4 space-y-3 text-slate-900">
+            <div>
+              <label class="text-xs">Full name</label>
+              <input required name="bname" class="w-full mt-1 p-3 rounded-md" placeholder="Full name" />
+            </div>
+            <div>
+              <label class="text-xs">License #</label>
+              <input required name="license" class="w-full mt-1 p-3 rounded-md" placeholder="License #" />
+            </div>
+            <div>
+              <label class="text-xs">Email or phone</label>
+              <input required name="bcontact" class="w-full mt-1 p-3 rounded-md" placeholder="Email or phone" />
+            </div>
+            <div class="flex items-center gap-3">
+              <button type="submit" class="py-4 px-6 rounded-md bg-sky-500 text-lg font-semibold">Create profile</button>
+              <button type="button" class="py-4 px-6 rounded-md border" onclick="demoBroker()">Preview</button>
+            </div>
+            <p class="text-xs text-slate-700">Brokers must comply with state licensing requirements. Jonafin provides the platform and lead flow; brokers complete regulated services in accordance with the law.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- FAQ -->
+  <section id="faq" class="max-w-6xl mx-auto px-6 py-12">
+    <h3 class="text-2xl font-bold mb-6">FAQ</h3>
+    <div class="grid md:grid-cols-2 gap-6 text-slate-300">
+      <details class="p-4 bg-slate-800 rounded-md"><summary class="cursor-pointer font-medium">Do buyers still need a licensed broker?</summary><p class="mt-2 text-sm">Local rules vary. Jonafin streamlines offer submission and fee transparency — licensed broker involvement depends on state law and seller requirements.</p></details>
+      <details class="p-4 bg-slate-800 rounded-md"><summary class="cursor-pointer font-medium">How are fees handled?</summary><p class="mt-2 text-sm">Fee splits are disclosed up front. Jonafin does not add hidden brokerage premiums — the platform enables transparent arrangements between buyer, seller, and broker.</p></details>
+      <details class="p-4 bg-slate-800 rounded-md"><summary class="cursor-pointer font-medium">Is Jonafin available everywhere?</summary><p class="mt-2 text-sm">Not yet. We roll out markets gradually to ensure compliance and quality. Enter your location to join waitlists.</p></details>
+      <details class="p-4 bg-slate-800 rounded-md"><summary class="cursor-pointer font-medium">Is my data private?</summary><p class="mt-2 text-sm">We protect data and only share offer details with parties needed to process the transaction. See our privacy policy for full details (not included in this demo page).</p></details>
+    </div>
+  </section>
+
+  <!-- CONTACT / FOOTER -->
+  <footer id="contact" class="max-w-7xl mx-auto px-6 py-10 border-t border-slate-800 text-slate-400">
+    <div class="grid md:grid-cols-3 gap-6">
+      <div>
+        <h4 class="text-lg font-semibold">Jonafin</h4>
+        <p class="mt-2 text-sm">Submit offers. Reduce uncertain fees. Give brokers flexible earning options.</p>
+      </div>
+      <div>
+        <h5 class="font-semibold">Contact</h5>
+        <p class="text-sm mt-2">hello@jonafin.example</p>
+        <p class="text-sm">Support response within 48 hours (demo only).</p>
+      </div>
+      <div>
+        <h5 class="font-semibold">Stay in touch</h5>
+        <form id="newsletter" class="mt-2 flex gap-2">
+          <input placeholder="Email address" class="p-2 rounded-md text-slate-900" />
+          <button class="px-3 rounded-md bg-emerald-500 font-semibold text-slate-900">Join</button>
+        </form>
+      </div>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-600">© Jonafin — Demo landing page. Not legal advice. Always follow local real estate laws and licensing rules.</p>
+  </footer>
+
+  <script>
+  // Lightweight demo interactions for both modals
+  const offerModal = document.getElementById('offerModal');
+  const brokerModal = document.getElementById('brokerModal');
+  const offerBackdrop = document.getElementById('modalBackdrop');
+  const brokerBackdrop = document.getElementById('brokerBackdrop');
+  const openOfferBtn = document.getElementById('openOfferBtn');
+  const openBrokerBtn = document.getElementById('openBrokerBtn');
+  const closeOfferBtn = document.getElementById('closeModal');
+  const closeBrokerBtn = document.getElementById('closeBroker');
+
+  function openModal(modal){
+    if(!modal) return;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    setTimeout(()=>{
+      const first = modal.querySelector('input');
+      if(first) first.focus();
+    },60);
+  }
+  function closeModal(modal){
+    if(!modal) return;
+    modal.classList.remove('flex');
+    modal.classList.add('hidden');
+  }
+
+  if(openOfferBtn) openOfferBtn.addEventListener('click', (e)=>{ e.preventDefault(); openModal(offerModal); });
+  if(closeOfferBtn) closeOfferBtn.addEventListener('click', ()=> closeModal(offerModal));
+  if(offerBackdrop) offerBackdrop.addEventListener('click', ()=> closeModal(offerModal));
+
+  if(openBrokerBtn) openBrokerBtn.addEventListener('click', (e)=>{ e.preventDefault(); openModal(brokerModal); });
+  if(closeBrokerBtn) closeBrokerBtn.addEventListener('click', ()=> closeModal(brokerModal));
+  if(brokerBackdrop) brokerBackdrop.addEventListener('click', ()=> closeModal(brokerModal));
+
+  // Close on ESC for both
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape'){
+      closeModal(offerModal);
+      closeModal(brokerModal);
+    }
+  });
+
+  // Offer form handler
+  const offerForm = document.getElementById('offerForm');
+  if(offerForm){
+    offerForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      alert('Thanks — your offer was submitted (demo). A real implementation would send data to the server.');
+      this.reset();
+      closeModal(offerModal);
+    });
+  }
+
+  // Broker form handler
+  const brokerForm = document.getElementById('brokerForm');
+  if(brokerForm){
+    brokerForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      alert('Broker profile created (demo). In production we would verify licensing and onboard you.');
+      this.reset();
+      closeModal(brokerModal);
+    });
+  }
+
+  function quickDemo(){
+    const form = document.getElementById('offerForm');
+    if(!form) return;
+    form.address.value = '456 Oak Avenue, Suite 2';
+    form.amount.value = 425000;
+    form.timeline.value = '30 days';
+    form.name.value = 'Demo Buyer';
+    form.contact.value = 'demo@example.com';
+  }
+
+  function demoBroker(){
+    alert('Broker demo — enter details to create a test profile.');
+  }
+</script>
+</body>
+</html>
